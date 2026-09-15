@@ -2,7 +2,7 @@ export type Uuid = string;
 export type IsoDate = string;
 export type IsoTimestamp = string;
 
-export type ScheduleType = "2_2" | "3_3" | "2_2_3" | "custom";
+export type ScheduleType = "2_2" | "3_3" | "2_2_3" | "5_2" | "1_3" | "custom";
 export type GoalStatus = "active" | "completed" | "archived";
 export type StudySessionStatus = "planned" | "completed" | "cancelled";
 

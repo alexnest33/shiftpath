@@ -13,6 +13,8 @@ The Supabase schema is stored as ordered SQL migrations in
    triggers for `updated_at`, grants, and RLS policies.
 2. `20260915010000_add_profile_creation_trigger.sql` adds automatic profile
    creation and safely backfills profiles for existing Auth users.
+3. `20260915020000_add_schedule_presets.sql` adds the `5_2` and `1_3`
+   schedule types and validates their exact preset arrays.
 
 The schema contains four user-owned tables:
 
@@ -21,8 +23,8 @@ The schema contains four user-owned tables:
   automatically.
 - `schedules` stores a schedule anchor date and a repeating `boolean[]` cycle.
   `true` means a work day and `false` means a day off. Presets for 2/2, 3/3,
-  and the 14-day 2/2/3 cycle are validated by database constraints; custom
-  cycles may contain between 1 and 366 days.
+  the 14-day 2/2/3 cycle, 5/2, and сутки/трое are validated by database
+  constraints; custom cycles may contain between 1 and 366 days.
 - `goals` stores a user's learning goals and their status.
 - `study_sessions` belongs to both a user and one of that user's goals. A
   composite foreign key prevents linking a session to another user's goal.
@@ -37,11 +39,11 @@ separate policies restricting every operation to rows owned by `auth.uid()`.
 
 The migrations are local only and are not applied automatically.
 
-For a new, empty project, run both files in timestamp order through the
-Supabase SQL Editor. For a project where
-`20260915000000_initial_schema.sql` has already been applied, **do not run the
-initial migration again**: its types and tables already exist. Run only
-`20260915010000_add_profile_creation_trigger.sql`.
+For a new, empty project, run all three files in timestamp order through the
+Supabase SQL Editor. Never rerun a migration that has already been applied.
+For a project where the first two migrations are already applied, run only
+`20260915020000_add_schedule_presets.sql`. If only the initial migration has
+been applied, do not rerun it: apply the second migration and then the third.
 
 To apply a required migration:
 
